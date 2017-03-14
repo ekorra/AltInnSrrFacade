@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AltInnSrr.Connected_Services.AltInnSrrService;
+using AltInnTilgangsstyring.AltInn;
 using MoveAdmin.Commons;
 
 namespace AltInnSrr
@@ -19,7 +20,7 @@ namespace AltInnSrr
 
         public async Task<AltInnSrrRights> GetRights(int orgnr)
         {
-            var result = await serviceClient.GetRights(orgnr.ToString());
+            var result = await serviceClient.GetRights(orgnr);
             var altInnSrrRights = new AltInnSrrRights()
             {
                 ReadRightValidTo = GetValidToDate(result, RegisterSRRRightsType.Read),
