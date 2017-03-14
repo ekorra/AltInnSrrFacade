@@ -1,7 +1,6 @@
 ﻿using System.ServiceModel;
-using System.ServiceModel.Channels;
 
-namespace AltInnTilgangsstyring.AltInn
+namespace AltInnSrr
 {
     public class AltInnEnvironment
     {
@@ -9,16 +8,13 @@ namespace AltInnTilgangsstyring.AltInn
         public string Password { get; set; }
         public string ServiceCode { get; set; }
         public int ServiceEditionCode { get; set; }
-        public EndpointAddress EndpointAddress { get; set; }
+        public string EndpointUri { get; set; }
 
-        public AltInnEnvironment(string userName, string password, string serviceCode, int serviceEditionCode, EndpointAddress endpointAddress)
+        public AltInnEnvironment()
         {
-            UserName = userName;
-            Password = password;
-            ServiceCode = serviceCode;
-            ServiceEditionCode = serviceEditionCode;
-            EndpointAddress = endpointAddress;
+            
         }
+
 
         
     }

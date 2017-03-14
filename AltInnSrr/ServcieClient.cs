@@ -3,7 +3,6 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using AltInnSrr.Connected_Services.AltInnSrrService;
-using AltInnTilgangsstyring.AltInn;
 
 namespace AltInnSrr
 {
@@ -118,14 +117,14 @@ namespace AltInnSrr
         private RegisterSRRAgencyExternalBasicClient GetClient()
         {
             var client = new RegisterSRRAgencyExternalBasicClient();
-            client.Endpoint.Address = altInnEnvironment.EndpointAddress;
-            client.Endpoint.Binding = GetBinding();
+            client.Endpoint.Address = new EndpointAddress(altInnEnvironment.EndpointUri);
+            client.Endpoint.Binding = GetBinding(client.Endpoint.Address);
             return client;
         }
 
-        private Binding GetBinding()
+        private Binding GetBinding(EndpointAddress endpointAddress)
         {
-            var scheme = altInnEnvironment.EndpointAddress.Uri.Scheme;
+            var scheme = endpointAddress.Uri.Scheme;
             return scheme == "https" ? (Binding) new BasicHttpsBinding() : new BasicHttpBinding();
         }
     }

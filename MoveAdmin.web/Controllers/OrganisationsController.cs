@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AltInnSrr;
-using AltInnTilgangsstyring;
 using Microsoft.AspNetCore.Mvc;
 using MoveAdmin.Commons;
 using MoveAdmin.Lib;
