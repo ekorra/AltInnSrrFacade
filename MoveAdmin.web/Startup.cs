@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using AltInnSrr;
+using AltInnTilgangsstyring.AltInn;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +34,9 @@ namespace MoveAdmin.web
             // Add framework services.
             services.AddMvc();
             services.AddTransient<ISrrClient, SrrClient>();
-            services.AddTransient<IServiceClient, ServcieClient>();
+            services.AddSingleton<IServiceClient>(
+                new ServcieClient(new AltInnEnvironment("hus", "bil", "båt", 0,
+                    new EndpointAddress("https://www.altinn.no/service.svc"))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
