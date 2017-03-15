@@ -3,18 +3,20 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using AltInnSrr.Connected_Services.AltInnSrrService;
+using Microsoft.Extensions.Options;
 
 namespace AltInnSrr
 {
     public class ServcieClient: IServiceClient
     {
         private readonly AltInnEnvironment altInnEnvironment;
-
-        public ServcieClient(AltInnEnvironment altInnEnvironment)
+        
+        public ServcieClient(IOptions<AltInnEnvironment> altinnEnvironment)
         {
-            this.altInnEnvironment = altInnEnvironment;
+            this.altInnEnvironment = altinnEnvironment.Value;
         }
 
+        
         public async Task<GetRightResponseList>  GetAllRights()
         {
             var client = new RegisterSRRAgencyExternalBasicClient();

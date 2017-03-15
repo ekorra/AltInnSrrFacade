@@ -36,9 +36,9 @@ namespace MoveAdmin.web
 
             services.AddMvc();
             services.AddTransient<ISrrClient, SrrClient>();
-            //services.AddTransient<IServiceClient, ServcieClient>();
-            var altInnEnvironment = Configuration.GetSection("AltInnSrr").Get<AltInnEnvironment>();
-            services.AddSingleton<IServiceClient>(new ServcieClient(altInnEnvironment));
+            services.AddTransient<IServiceClient, ServcieClient>();
+            //var altInnEnvironment = Configuration.GetSection("AltInnSrr").Get<AltInnEnvironment>();
+            //services.AddSingleton<IServiceClient>(new ServcieClient(altInnEnvironment));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
