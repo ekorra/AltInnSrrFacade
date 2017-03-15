@@ -130,16 +130,4 @@ namespace AltInnSrr
             return scheme == "https" ? (Binding) new BasicHttpsBinding() : new BasicHttpBinding();
         }
     }
-
-
-    
-
-    public interface IServiceClient
-    {
-        Task<GetRightResponseList> GetAllRights();
-        Task<GetRightResponseList> GetRights(int orgnr);
-        Task<DeleteRightResponseList> DeleteRights(int orgnr);
-        Task<AddRightResponseList> AddRights(int orgnr, DateTime validTo);
-        
-    }
 }
