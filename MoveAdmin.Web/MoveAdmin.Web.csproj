@@ -18,8 +18,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AltInnSrr\AltInnSrr.csproj" />
-    <ProjectReference Include="..\MoveAdmin.Commons\MoveAdmin.Commons.csproj" />
-    <ProjectReference Include="..\MoveAdmin.Lib\MoveAdmin.Lib.csproj" />
   </ItemGroup>
 
 </Project>

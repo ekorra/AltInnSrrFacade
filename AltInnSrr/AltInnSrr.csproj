@@ -13,9 +13,7 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MoveAdmin.Commons\MoveAdmin.Commons.csproj" />
-  </ItemGroup>
+ 
 
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />

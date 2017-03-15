@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoveAdmin.Commons
+namespace AltInnSrr
 {
     public class AltInnSrrRights
     {

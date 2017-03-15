@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using MoveAdmin.Commons;
+﻿using System.Threading.Tasks;
+using AltInnSrr;
 using Newtonsoft.Json;
 
-namespace MoveAdmin.Lib
+namespace MoveAdmin.Web
 {
     public class Organisation
     {
