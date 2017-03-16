@@ -19,44 +19,76 @@ namespace AltInnSrr
         public async Task<AltInnSrrRights> GetRights(int orgnr)
         {
             var result = await serviceClient.GetRights(orgnr);
+            var altInnSrrRights = GetAltInnSrrRights(result);
+            return altInnSrrRights;
+        }
+
+        private static AltInnSrrRights GetAltInnSrrRights(IEnumerable<GetRightResponse> result)
+        {
+            var getRightResponses = result as GetRightResponse[] ?? result.ToArray();
             var altInnSrrRights = new AltInnSrrRights()
             {
-                ReadRightValidTo = GetValidToDate(result, RegisterSRRRightsType.Read),
-                WriteRightValidTo = GetValidToDate(result, RegisterSRRRightsType.Write)
+                OrgNr = int.Parse( getRightResponses.FirstOrDefault().Reportee),
+                ReadRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Read)?.ValidTo ?? DateTime.MinValue,
+                WriteRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Write)?.ValidTo ?? DateTime.MinValue
             };
             return altInnSrrRights;
         }
 
-        private static DateTime GetValidToDate(GetRightResponseList result, RegisterSRRRightsType type)
-        {
-            var right = result.FirstOrDefault(r => r.Right == type);
-            if (right != null)
-            {
-                return right.ValidTo;
-            }
-            return DateTime.MinValue;
-
-        }
-
+       
         public async Task<IEnumerable<AltInnSrrRights>> GetRights()
         {
-            throw new NotImplementedException();
+            var result = await serviceClient.GetAllRights();
+            var altinnRights = new List<AltInnSrrRights>();
+            var orglist = result.GroupBy(g => g.Reportee).Distinct();
+            foreach (var org in orglist)
+            {
+                var list = result.Where(o => o.Reportee == org.Key.ToString());
+                altinnRights.Add(GetAltInnSrrRights(list));
+            }
+            return altinnRights;
         }
 
         public async Task DeleteRights(int orgnr)
         {
-            throw new NotImplementedException();
+            var result = await serviceClient.DeleteRights(orgnr);
+            var errors = result.Where(r => r.OperationResult != OperationResult.Ok);
+
+            var deleteRightResponses = errors as DeleteRightResponse[] ?? errors.ToArray();
+            if (deleteRightResponses.Any() )
+            {
+                var messages = deleteRightResponses.Select(s => $"{s.Right.ToString()} - {s.OperationResult}");
+                throw new AltInnSrrException($"Feil ved sletting av rettigheter: { string.Join(", ", messages)}");
+            }
         }
 
-        public async Task<AltInnSrrRights> UpdateRights(int orgnr, DateTime ValidTo)
+        public async Task<AltInnSrrRights> UpdateRights(int orgnr, DateTime validTo)
         {
-            throw new NotImplementedException();
+            await serviceClient.DeleteRights(orgnr);
+            return await AddRights(orgnr, validTo);
         }
 
         public async Task<AltInnSrrRights> AddRights(int orgnr)
         {
-            throw new NotImplementedException();
+            return await AddRights(orgnr, DateTime.Now.AddYears(2));
         }
-        
+
+        public async Task<AltInnSrrRights> AddRights(int orgnr, DateTime endDate)
+        {
+            var result = await serviceClient.AddRights(orgnr, endDate);
+            return GetAddAltInnSrrRights(result);
+        }
+
+        private static AltInnSrrRights GetAddAltInnSrrRights(IEnumerable<AddRightResponse> result)
+        {
+            var getRightResponses = result as AddRightResponse[] ?? result.ToArray();
+            var altInnSrrRights = new AltInnSrrRights()
+            {
+                OrgNr = int.Parse(getRightResponses.FirstOrDefault().Reportee),
+                ReadRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Read)?.ValidTo ?? DateTime.MinValue,
+                WriteRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Write)?.ValidTo ?? DateTime.MinValue
+            };
+            return altInnSrrRights;
+        }
     }
 }

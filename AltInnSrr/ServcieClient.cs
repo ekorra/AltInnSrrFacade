@@ -73,6 +73,7 @@ namespace AltInnSrr
 
                 var result = await client.DeleteRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password,
                     altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode, deleteRightRequestList);
+
                 return result.Body.DeleteRightsBasicResult;
             }
             catch (FaultException<AltinnFault> e)
