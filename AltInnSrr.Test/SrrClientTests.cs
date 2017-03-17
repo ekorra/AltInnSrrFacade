@@ -170,6 +170,55 @@ namespace AltInnSrr.Test
             await srrClient.DeleteRights(orgnr);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(AltInnSrrException))]
+        public async Task AddRights_ExistingOrg_ThrowsExcption()
+        {
+            const int orgnr = 123456789;
+            const OperationResult notOkResult = OperationResult.RuleAlreadyExists;
+
+            var serviceClient = Substitute.For<IServiceClient>();
+        }
+
+        [TestMethod]
+        public async Task AddRights_NewOrg_ReturnsRights()
+        {
+            const int orgnr = 123456789;
+            const OperationResult notOkResult = OperationResult.Ok;
+
+            var serviceClient = Substitute.For<IServiceClient>();
+        }
+
+        [TestMethod]
+        public async Task UpdateRights_ExistingOrg_ReturnsDeleteAndAddCalled()
+        {
+            const int orgnr = 123456789;
+            const OperationResult notOkResult = OperationResult.Ok;
+
+            var serviceClient = Substitute.For<IServiceClient>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AltInnSrrException))]
+        public async Task UpdateRights_NonExistingOrg_ThrowsException()
+        {
+            const int orgnr = 123456789;
+            const OperationResult notOkResult = OperationResult.RuleNotFound;
+
+            var serviceClient = Substitute.For<IServiceClient>();
+            var deleteRightsResponseList = new DeleteRightResponseList
+            {
+                GetDeleteRightItem(orgnr, OperationResult.Ok, RegisterSRRRightsType.Read),
+                GetDeleteRightItem(orgnr, notOkResult, RegisterSRRRightsType.Write),
+
+            };
+            serviceClient.DeleteRights(Arg.Any<int>()).ReturnsForAnyArgs(deleteRightsResponseList);
+
+            var client = new SrrClient(serviceClient);
+            var result = await client.UpdateRights(orgnr, DateTime.Now.AddYears(2));
+            await serviceClient.Received().DeleteRights(orgnr);
+        }
+
         private static DeleteRightResponse GetDeleteRightItem(int orgnr, OperationResult result, RegisterSRRRightsType right)
         {
             return new DeleteRightResponse
