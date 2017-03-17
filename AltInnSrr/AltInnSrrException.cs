@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using AltInnSrr.Connected_Services.AltInnSrrService;
 
 namespace AltInnSrr
 {
     public class AltInnSrrException: Exception
     {
-        public AltInnSrrException()
+        public  IList<OperationResult?> AltInnFaultResult { get; private set; }
+        public AltInnSrrException(IList<OperationResult?> result)
         {
+            AltInnFaultResult = result;
         }
 
         public AltInnSrrException(string message): base(message)
         {
         }
+        public AltInnSrrException(string message, List<OperationResult?> result) : this(message)
+        {
+            AltInnFaultResult = result;
+        }
 
-        public AltInnSrrException(string message, Exception innerException): base(message, innerException)
+        public AltInnSrrException(string message, Exception innerException, IList<OperationResult> result): base(message, innerException)
         {
         }
     }

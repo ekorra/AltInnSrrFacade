@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AltInnSrr.Connected_Services.AltInnSrrService;
 
@@ -53,18 +54,45 @@ namespace AltInnSrr
         {
             var result = await serviceClient.DeleteRights(orgnr);
             var errors = result.Where(r => r.OperationResult != OperationResult.Ok);
-
-            var deleteRightResponses = errors as DeleteRightResponse[] ?? errors.ToArray();
-            if (deleteRightResponses.Any() )
+            
+            var errorResponses = errors as IList<DeleteRightResponse> ?? errors.ToList();
+            if (errorResponses.Any() )
             {
-                var messages = deleteRightResponses.Select(s => $"{s.Right.ToString()} - {s.OperationResult}");
-                throw new AltInnSrrException($"Feil ved sletting av rettigheter: { string.Join(", ", messages)}");
+                HandleErrors(errorResponses);
             }
+        }
+
+        private static void HandleErrors(IList<DeleteRightResponse> errorResponses)
+        {
+            var errorlist = errorResponses.ToList();
+
+            var messages = errorResponses.Select(s => $"{s.Right.ToString()} - {s.OperationResult}");
+            throw new AltInnSrrException($"Feil ved sletting av rettigheter: {string.Join(", ", messages)}",
+                errorlist.Where(o => o.OperationResult != OperationResult.Ok).Select(o => o.OperationResult).ToList());
+        }
+
+        private static void HandleErrors(IList<AddRightResponse> errorResponses)
+        {
+            var errorlist = errorResponses.ToList();
+
+            var messages = errorResponses.Select(s => $"{s.Right.ToString()} - {s.OperationResult}");
+            throw new AltInnSrrException($"Feil ved oppretting av rettigheter: {string.Join(", ", messages)}",
+                errorlist.Where(o => o.OperationResult != OperationResult.Ok).Select(o => o.OperationResult).ToList());
         }
 
         public async Task<AltInnSrrRights> UpdateRights(int orgnr, DateTime validTo)
         {
-            await serviceClient.DeleteRights(orgnr);
+            try
+            {
+                await DeleteRights(orgnr);
+            }
+            catch (AltInnSrrException e)
+            {
+                if (e.AltInnFaultResult.All(r => r != OperationResult.RuleNotFound))
+                {
+                    throw;
+                }
+            }
             return await AddRights(orgnr, validTo);
         }
 
@@ -75,7 +103,15 @@ namespace AltInnSrr
 
         public async Task<AltInnSrrRights> AddRights(int orgnr, DateTime endDate)
         {
+            
             var result = await serviceClient.AddRights(orgnr, endDate);
+            var errors = result.Where(r => r.OperationResult != OperationResult.Ok);
+
+            var errorResponses = errors as IList<AddRightResponse> ?? errors.ToList();
+            if (errorResponses.Any())
+            {
+                HandleErrors(errorResponses);
+            }
             return GetAddAltInnSrrRights(result);
         }
 
