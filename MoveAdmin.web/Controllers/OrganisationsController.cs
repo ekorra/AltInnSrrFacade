@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using AltInnSrr;
 using Microsoft.AspNetCore.Mvc;
-using MoveAdmin.Web;
 
-namespace MoveAdmin.web.Controllers
+namespace MoveAdmin.Web.Controllers
 {
     [Route("api/[controller]")]
     public class OrganisationsController : Controller
