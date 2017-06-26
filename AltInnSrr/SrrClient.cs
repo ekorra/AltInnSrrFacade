@@ -17,6 +17,19 @@ namespace AltInnSrr
             this.serviceClient = serviceClient;
         }
 
+        public async Task<IEnumerable<AltInnSrrRights>> GetAllRights()
+        {
+            var result = await serviceClient.GetAllRights();
+            var group = result.GroupBy(g => g.Reportee);
+
+            var srrRightsList = new List<AltInnSrrRights>();
+            foreach (var reportee in group)
+            {
+                srrRightsList.Add(GetAltInnSrrRights(reportee));
+            }
+           return srrRightsList;
+        }
+
         public async Task<AltInnSrrRights> GetRights(int orgnr)
         {
             var result = await serviceClient.GetRights(orgnr);
@@ -27,13 +40,17 @@ namespace AltInnSrr
         private static AltInnSrrRights GetAltInnSrrRights(IEnumerable<GetRightResponse> result)
         {
             var getRightResponses = result as GetRightResponse[] ?? result.ToArray();
-            var altInnSrrRights = new AltInnSrrRights()
+            
+            if(getRightResponses.Any())
             {
-                OrgNr = int.Parse( getRightResponses.FirstOrDefault().Reportee),
-                ReadRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Read)?.ValidTo ?? DateTime.MinValue,
-                WriteRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Write)?.ValidTo ?? DateTime.MinValue
-            };
-            return altInnSrrRights;
+                return new AltInnSrrRights()
+                {
+                    ReadRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Read)?.ValidTo ?? DateTime.MinValue,
+                    WriteRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Write)?.ValidTo ?? DateTime.MinValue,
+                    OrgNr = int.Parse(getRightResponses.First().Reportee)
+                };
+            }
+            return new AltInnSrrRights();
         }
 
        
@@ -120,7 +137,6 @@ namespace AltInnSrr
             var getRightResponses = result as AddRightResponse[] ?? result.ToArray();
             var altInnSrrRights = new AltInnSrrRights()
             {
-                OrgNr = int.Parse(getRightResponses.FirstOrDefault().Reportee),
                 ReadRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Read)?.ValidTo ?? DateTime.MinValue,
                 WriteRightValidTo = getRightResponses.FirstOrDefault(r => r.Right == RegisterSRRRightsType.Write)?.ValidTo ?? DateTime.MinValue
             };

@@ -33,8 +33,7 @@ namespace AltInnSrr.Test
             var result = await  srrClient.GetRights();
             var altInnSrrRightses = result as AltInnSrrRights[] ?? result.ToArray();
             Assert.AreEqual(1, altInnSrrRightses.Count());
-            Assert.IsTrue(altInnSrrRightses.FirstOrDefault().HasMoveRights());
-            Assert.AreEqual(orgnr, altInnSrrRightses.FirstOrDefault().OrgNr);
+            Assert.IsTrue(altInnSrrRightses.FirstOrDefault().HasMoveRights);
         }
 
         [TestMethod]
@@ -218,11 +217,10 @@ namespace AltInnSrr.Test
 
             var client = new SrrClient(serviceClient);
             var result = await client.AddRights(orgnr, validTo);
-
-            Assert.AreEqual(orgnr, result.OrgNr);
+            
             Assert.AreEqual(validTo, result.ReadRightValidTo);
             Assert.AreEqual(validTo, result.WriteRightValidTo);
-            Assert.IsTrue(result.HasMoveRights());
+            Assert.IsTrue(result.HasMoveRights);
         }
 
         [TestMethod]

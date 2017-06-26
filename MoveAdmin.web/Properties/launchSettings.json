@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -18,12 +18,31 @@
     },
     "AltInnSrr.web": {
       "commandName": "Project",
+      "commandLineArgs": "t=est",
       "launchBrowser": true,
       "launchUrl": "api/organisations",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:65478"
+    },
+    "development": {
+      "commandName": "IISExpress",
+      "commandLineArgs": "Profile:MachineName=Bob App:MainWindow:Left=1234",
+      "launchBrowser": true,
+      "launchUrl": "api/organisations",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "staging": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/organisations",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://localhost:65477/"
     }
   }
 }

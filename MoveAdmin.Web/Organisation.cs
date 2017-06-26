@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AltInnSrr;
 using Newtonsoft.Json;
@@ -8,53 +9,74 @@ namespace MoveAdmin.Web
     public class Organisation
     {
         private readonly ISrrClient srrClient;
-        public string OrganisationNumber { get; set; }
+        public int OrganisationNumber { get; private set; }
         public string Name { get; set; }
 
         public AltInnSrrRights AltInnSrrRights { get; set; }
 
-        public Organisation(ISrrClient srrClient)
+        public Organisation(ISrrClient srrClient, int organisationNumber)
         {
             this.srrClient = srrClient;
+            OrganisationNumber = organisationNumber;
         }
 
-        public async Task GetInforation(int orgnr)
+        private Organisation() { }
+
+        public static Organisation Create(int orgnr, AltInnSrrRights rights)
+        {
+            return new Organisation{OrganisationNumber = orgnr, AltInnSrrRights = rights};
+        }
+
+        public async Task GetInforation()
         {           
-            AltInnSrrRights = await srrClient.GetRights(orgnr);
+            var result = await srrClient.GetRights(OrganisationNumber);
+            AltInnSrrRights = result;
         }
-       
-
-        public async Task Create(int orgnr)
+        
+        public async Task Add()
         {
-            AltInnSrrRights = await srrClient.AddRights(orgnr);
+            AltInnSrrRights = await srrClient.AddRights(OrganisationNumber);
         }
 
-        public async Task Update(int orgnr, DateTime? validTo = null)
+        public async Task Update(AltInnSrrRights altInnSrrRights)
         {
-            if (!validTo.HasValue)
+            DateTime validTo;
+            if (altInnSrrRights == null || (altInnSrrRights.ReadRightValidTo == DateTime.MinValue || altInnSrrRights.ReadRightValidTo.Date <= DateTime.Now.Date))
             {
                 validTo = DateTime.Now.AddYears(2);
             }
-            AltInnSrrRights = await srrClient.UpdateRights(orgnr, validTo.Value);
+            else
+            {
+                validTo = altInnSrrRights.ReadRightValidTo;
+            }
+            AltInnSrrRights = await srrClient.UpdateRights(OrganisationNumber, validTo);
         }
 
+        public static async Task<IEnumerable<Organisation>> GetOrganisations(ISrrClient srrClient)
+        {
+            var organisations = new List<Organisation>();
+            var result =  await srrClient.GetAllRights();
+            foreach (var srrRights in result)
+            {
+                var org = new Organisation
+                {
+                    OrganisationNumber = srrRights.OrgNr,
+                    AltInnSrrRights = srrRights
+                };
+                organisations.Add(org);
+            }
+            return organisations;
+        }
+        
         public async Task Delete(int orgnr)
         {
             await srrClient.DeleteRights(orgnr);
+            AltInnSrrRights = new AltInnSrrRights();
         }
 
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this);
         }
-
-        public bool IsValidOrgnr(int orgnr)
-        {
-            if (orgnr.ToString().Length != 9)
-                return false;
-
-            return orgnr % 11 == 0;
-        }
-
     }
 }

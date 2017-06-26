@@ -1,16 +1,18 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace AltInnSrr
 {
     public class AltInnSrrRights
     {
+        [JsonIgnore]
         public int OrgNr { get; set; }
-        public DateTime ReadRightValidTo { get; set; }
-        public DateTime WriteRightValidTo { get; set; }
+        public DateTime ReadRightValidTo { get; set; } = DateTime.MinValue;
+        public DateTime WriteRightValidTo { get; set; } = DateTime.MinValue;
 
-        public bool HasMoveRights()
+        public  bool HasMoveRights
         {
-            return WriteRightValidTo > DateTime.Now && ReadRightValidTo > DateTime.Now;
+            get { return WriteRightValidTo > DateTime.Now && ReadRightValidTo > DateTime.Now; }
         }
     }
 }

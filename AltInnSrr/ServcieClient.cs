@@ -13,15 +13,30 @@ namespace AltInnSrr
         
         public ServcieClient(IOptions<AltInnEnvironment> altinnEnvironment)
         {
-            this.altInnEnvironment = altinnEnvironment.Value;
+            altInnEnvironment = altinnEnvironment.Value;
         }
 
         
         public async Task<GetRightResponseList>  GetAllRights()
         {
-            var client = new RegisterSRRAgencyExternalBasicClient();
-            var result = await client.GetRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password, altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode,"");
-            return result.Body.GetRightsBasicResult;
+            try
+            {
+                var client = GetClient();
+                var result = await client.GetRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password, altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode,null);
+                return result.Body.GetRightsBasicResult;
+            }
+            catch (FaultException<AltinnFault> e)
+            {
+                Console.Write(e);
+                throw;
+            }
+            catch (FaultException e)
+            {
+                var code = e.Code;
+                var message = e.Message;
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<GetRightResponseList> GetRights(int orgnr)
@@ -43,11 +58,6 @@ namespace AltInnSrr
             {
                 var code = e.Code;
                 var message = e.Message;
-                Console.WriteLine(e);
-                throw;
-            }
-            catch (Exception e)
-            {
                 Console.WriteLine(e);
                 throw;
             }

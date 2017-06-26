@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AltInnSrr;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using Newtonsoft.Json;
+using NoCommons.Org;
 
 namespace MoveAdmin.Web.Controllers
 {
@@ -10,36 +14,89 @@ namespace MoveAdmin.Web.Controllers
     {
         // GET api/organisations
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            var result =
+                Organisation.GetOrganisations(
+                    this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient);
+            return Ok(JsonConvert.SerializeObject(result.Result));
         }
 
         // GET api/organisations/5
         [HttpGet("{id}")]
-        public async Task<string> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var org = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient);
-            await org.GetInforation(id);
-            return org.ToJson();
+            if (!OrganisasjonsnummerValidator.IsValid(id.ToString()))
+            {
+                return Forbid();
+            }
+
+            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, id);
+            await organisation.GetInforation();
+            return Ok(organisation.ToJson());
         }
 
         // POST api/organisations
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromBody]int value)
         {
+            if (!OrganisasjonsnummerValidator.IsValid(value.ToString()))
+            {
+                return Forbid();
+            }
+
+            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, value);
+            try
+            {
+                await organisation.Add();
+                var uri = this.HttpContext.Request.Path + "/" + organisation.OrganisationNumber;
+                return Created(uri, organisation.ToJson());
+            }
+            catch (AltInnSrrException e)
+            {
+                return StatusCode(500, e);
+            }
         }
 
         // PUT api/organisations/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Put(int id, [FromBody]AltInnSrrRights value)
         {
+            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, id);
+            try
+            {
+                await organisation.Update(value);
+                return Ok(organisation.ToJson());
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
         }
 
         // DELETE api/organisations/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-        }
+
+            if (!OrganisasjonsnummerValidator.IsValid(id.ToString()))
+            {
+                return Forbid();
+            }
+
+            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, id);
+
+            try
+            {
+                await organisation.Delete(id);
+                return Ok();
+            }
+            catch (AltInnSrrException e)
+            {
+                return StatusCode(500, e);
+            }
+        }        
     }
 }
+

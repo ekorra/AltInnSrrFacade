@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AltInnSrr
@@ -9,5 +10,6 @@ namespace AltInnSrr
         Task DeleteRights(int orgnr);
         Task<AltInnSrrRights> UpdateRights(int orgnr, DateTime ValidTo);
         Task<AltInnSrrRights> AddRights(int orgnr);
+        Task<IEnumerable<AltInnSrrRights>> GetAllRights();
     }
 }
