@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using AltInnSrr.Lib;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using NoCommons.Org;
 
@@ -16,10 +15,8 @@ namespace AltInnSrr.Api.Controllers
         public async Task<IActionResult> Get()
         {
 
-            var result =
-                Organisation.GetOrganisations(
-                    this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient);
-            return Ok(JsonConvert.SerializeObject(result.Result));
+            var result = await Organisation.GetOrganisations(GetService<ISrrClient>(), GetService<IEnhetsregisteretClient>());
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         // GET api/organisations/5

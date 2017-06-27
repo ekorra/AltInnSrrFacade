@@ -14,7 +14,7 @@ namespace AltInnSrr.Api
 
         public int OrganisationNumber { get; private set; }
         public string Name { get; set; }
-        public EnhetsregisteretContract EnhetsregisteretInfo { get; private set; }
+        public EnhetsregisteretContract EnhetsregisteretInfo { get; set; }
 
         public AltInnSrrRights AltInnSrrRights { get; set; }
 
@@ -53,17 +53,19 @@ namespace AltInnSrr.Api
             AltInnSrrRights = await srrClient.UpdateRights(OrganisationNumber, validTo);
         }
 
-        public static async Task<IEnumerable<Organisation>> GetOrganisations(ISrrClient srrClient)
+        public static async Task<IEnumerable<Organisation>> GetOrganisations(ISrrClient srrClient, IEnhetsregisteretClient enhetsregisteretClient)
         {
             var organisations = new List<Organisation>();
             var result =  await srrClient.GetAllRights();
             foreach (var srrRights in result)
             {
-                //var enhetsinfo = enhetsregisteretClient.GetEnhetInfo()
+                var enhetsinfo = await enhetsregisteretClient.GetEnhetInfo(srrRights.OrgNr.ToString());
                 var org = new Organisation
                 {
                     OrganisationNumber = srrRights.OrgNr,
-                    AltInnSrrRights = srrRights
+                    AltInnSrrRights = srrRights,
+                    EnhetsregisteretInfo = enhetsinfo
+                    
                 };
                 organisations.Add(org);
             }
