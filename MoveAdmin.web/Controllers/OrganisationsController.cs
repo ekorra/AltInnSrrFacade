@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AltInnSrr.Lib;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using NoCommons.Org;
 
@@ -27,33 +28,47 @@ namespace AltInnSrr.Api.Controllers
         {
             if (!OrganisasjonsnummerValidator.IsValid(id.ToString()))
             {
-                return Forbid();
+                return Forbid($"{id} er ikke et gyldig organisasjonsnummer");
             }
 
-            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, id);
-            await organisation.GetInforation();
-            return Ok(organisation.ToJson());
+            try
+            {
+
+                var organisation = new Organisation(id, GetService<ISrrClient>(),
+                    GetService<IEnhetsregisteretClient>());
+                await organisation.GetInforation();
+                return Ok(organisation.ToJson());
+            }
+            catch (Exception e)
+            {
+                return HandleErrors(e);
+            }
+        }
+
+        private  T GetService<T>()  
+        {
+            return (T) HttpContext.RequestServices.GetService(typeof(T));
         }
 
         // POST api/organisations
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]int value)
+        public async Task<IActionResult> Post([FromBody]int id)
         {
-            if (!OrganisasjonsnummerValidator.IsValid(value.ToString()))
+            if (!OrganisasjonsnummerValidator.IsValid(id.ToString()))
             {
-                return Forbid();
+                return Forbid($"{id} er ikke et gyldig organisasjonsnummer");
             }
 
-            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, value);
+            var organisation = new Organisation(id, GetService<ISrrClient>(), GetService<IEnhetsregisteretClient>());
             try
             {
                 await organisation.Add();
                 var uri = this.HttpContext.Request.Path + "/" + organisation.OrganisationNumber;
                 return Created(uri, organisation.ToJson());
             }
-            catch (AltInnSrrException e)
+            catch (Exception e)
             {
-                return StatusCode(500, e);
+                return HandleErrors(e);
             }
         }
 
@@ -61,7 +76,7 @@ namespace AltInnSrr.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]AltInnSrrRights value)
         {
-            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, id);
+            var organisation = new Organisation(id, GetService<ISrrClient>(), GetService<IEnhetsregisteretClient>());
             try
             {
                 await organisation.Update(value);
@@ -69,7 +84,7 @@ namespace AltInnSrr.Api.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, e);
+                return HandleErrors(e);
             }
         }
 
@@ -83,18 +98,32 @@ namespace AltInnSrr.Api.Controllers
                 return Forbid();
             }
 
-            var organisation = new Organisation(this.HttpContext.RequestServices.GetService(typeof(ISrrClient)) as ISrrClient, id);
+            var organisation = new Organisation(id, GetService<ISrrClient>(), GetService<IEnhetsregisteretClient>());
 
             try
             {
                 await organisation.Delete(id);
                 return Ok();
             }
-            catch (AltInnSrrException e)
+            catch (Exception e)
             {
-                return StatusCode(500, e);
+                return HandleErrors(e);
             }
-        }        
+        }
+
+        private ObjectResult HandleErrors(Exception e)
+        {
+
+            if(e is EnhetNotFoundException)
+            {
+                return NotFound(e.Message);
+            }
+            if (e is AltInnSrrException)
+            {
+                return StatusCode(500, e.Message);
+            }
+            return StatusCode(500, e.Message);
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AltInnSrr.Lib;
 using Newtonsoft.Json;
@@ -9,32 +10,32 @@ namespace AltInnSrr.Api
     public class Organisation
     {
         private readonly ISrrClient srrClient;
+        private readonly IEnhetsregisteretClient enhetsregisteretClient;
+
         public int OrganisationNumber { get; private set; }
         public string Name { get; set; }
+        public EnhetsregisteretContract EnhetsregisteretInfo { get; private set; }
 
         public AltInnSrrRights AltInnSrrRights { get; set; }
 
-        public Organisation(ISrrClient srrClient, int organisationNumber)
+        public Organisation(int organisationNumber, ISrrClient srrClient, IEnhetsregisteretClient enhetsregisteretClient)
         {
             this.srrClient = srrClient;
             OrganisationNumber = organisationNumber;
+            this.enhetsregisteretClient = enhetsregisteretClient;
         }
 
         private Organisation() { }
 
-        public static Organisation Create(int orgnr, AltInnSrrRights rights)
-        {
-            return new Organisation{OrganisationNumber = orgnr, AltInnSrrRights = rights};
-        }
-
         public async Task GetInforation()
-        {           
-            var result = await srrClient.GetRights(OrganisationNumber);
-            AltInnSrrRights = result;
+        {
+            EnhetsregisteretInfo = await enhetsregisteretClient.GetEnhetInfo(OrganisationNumber.ToString());
+            AltInnSrrRights = await srrClient.GetRights(OrganisationNumber); 
         }
         
         public async Task Add()
         {
+            EnhetsregisteretInfo = await enhetsregisteretClient.GetEnhetInfo(OrganisationNumber.ToString());
             AltInnSrrRights = await srrClient.AddRights(OrganisationNumber);
         }
 
@@ -58,6 +59,7 @@ namespace AltInnSrr.Api
             var result =  await srrClient.GetAllRights();
             foreach (var srrRights in result)
             {
+                //var enhetsinfo = enhetsregisteretClient.GetEnhetInfo()
                 var org = new Organisation
                 {
                     OrganisationNumber = srrRights.OrgNr,

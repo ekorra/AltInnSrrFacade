@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using AltInnSrr.Lib;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,8 @@ namespace AltInnSrr.Api
             services.AddMvc();
             services.AddTransient<ISrrClient, SrrClient>();
             services.AddTransient<IServiceClient, ServcieClient>();
+            services.AddTransient<IEnhetsregisteretClient, EnhetsregisteretClient>();
+            services.AddTransient<HttpClient>();
             //var altInnEnvironment = Configuration.GetSection("AltInnSrr").Get<AltInnEnvironment>();
             //services.AddSingleton<IServiceClient>(new ServcieClient(altInnEnvironment));
         }
