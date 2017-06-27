@@ -2,10 +2,10 @@
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
-using AltInnSrr.Connected_Services.AltInnSrrService;
+using AltInnSrr.Lib.Connected_Services.AltInnSrrService;
 using Microsoft.Extensions.Options;
 
-namespace AltInnSrr
+namespace AltInnSrr.Lib
 {
     public class ServcieClient: IServiceClient
     {

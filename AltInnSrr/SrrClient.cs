@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using AltInnSrr.Connected_Services.AltInnSrrService;
+using AltInnSrr.Lib.Connected_Services.AltInnSrrService;
 
-namespace AltInnSrr
+namespace AltInnSrr.Lib
 {
 
     public class SrrClient : ISrrClient

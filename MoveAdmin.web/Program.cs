@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace MoveAdmin.Web
+namespace AltInnSrr.Api
 { 
     public class Program
     {

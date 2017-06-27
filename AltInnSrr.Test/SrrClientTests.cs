@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AltInnSrr.Connected_Services.AltInnSrrService;
+using AltInnSrr.Lib.Connected_Services.AltInnSrrService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
-namespace AltInnSrr.Test
+namespace AltInnSrr.Lib.Test
 {
     [TestClass]
     public class SrrClientTests

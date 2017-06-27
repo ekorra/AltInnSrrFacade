@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AltInnSrr\AltInnSrr.csproj" />
+    <ProjectReference Include="..\AltInnSrr\AltInnSrr.Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

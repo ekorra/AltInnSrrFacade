@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AltInnSrr
+namespace AltInnSrr.Lib
 {
     public interface ISrrClient
     {

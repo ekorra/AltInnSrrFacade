@@ -1,6 +1,4 @@
-﻿using System.ServiceModel;
-
-namespace AltInnSrr
+﻿namespace AltInnSrr.Lib
 {
     public class AltInnEnvironment
     {

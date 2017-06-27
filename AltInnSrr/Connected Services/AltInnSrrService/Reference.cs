@@ -9,7 +9,7 @@
 
 using System.Runtime.Serialization;
 
-namespace AltInnSrr.Connected_Services.AltInnSrrService
+namespace AltInnSrr.Lib.Connected_Services.AltInnSrrService
 {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "0.5.0.0")]

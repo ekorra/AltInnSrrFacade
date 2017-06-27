@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using AltInnSrr.Connected_Services.AltInnSrrService;
+using AltInnSrr.Lib.Connected_Services.AltInnSrrService;
 
-namespace AltInnSrr
+namespace AltInnSrr.Lib
 {
     public class AltInnSrrException: Exception
     {

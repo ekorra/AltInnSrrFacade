@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AltInnSrr;
+using AltInnSrr.Lib;
 using Newtonsoft.Json;
 
-namespace MoveAdmin.Web
+namespace AltInnSrr.Api
 {
     public class Organisation
     {
