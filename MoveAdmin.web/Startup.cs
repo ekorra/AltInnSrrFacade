@@ -30,16 +30,14 @@ namespace AltInnSrr.Api
         {
             // Add framework services.
             services.AddOptions();
-            //services.Configure<AltInnEnvironment>(ConfigureOptions);
             services.Configure<AltInnEnvironment>(Configuration.GetSection("AltInnSrr"));
+            services.Configure<AltInnEnvironment>(Configuration);
 
             services.AddMvc();
             services.AddTransient<ISrrClient, SrrClient>();
             services.AddTransient<IServiceClient, ServcieClient>();
             services.AddTransient<IEnhetsregisteretClient, EnhetsregisteretClient>();
             services.AddTransient<HttpClient>();
-            //var altInnEnvironment = Configuration.GetSection("AltInnSrr").Get<AltInnEnvironment>();
-            //services.AddSingleton<IServiceClient>(new ServcieClient(altInnEnvironment));
         }
 
         private void ConfigureOptions(AltInnEnvironment altInnEnvironment)

@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  altinnsrr.api:
+    image: altinnsrr.api
+    build:
+      context: ./MoveAdmin.Web
+      dockerfile: Dockerfile

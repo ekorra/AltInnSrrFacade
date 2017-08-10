@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Lib.Test", "AltIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Lib", "AltInnSrr\AltInnSrr.Lib.csproj", "{60824E60-6B71-4F4D-8957-5C5B7F0528AB}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{14C7D45E-4111-4AA2-BD6F-8C738F2583A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{60824E60-6B71-4F4D-8957-5C5B7F0528AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60824E60-6B71-4F4D-8957-5C5B7F0528AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60824E60-6B71-4F4D-8957-5C5B7F0528AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14C7D45E-4111-4AA2-BD6F-8C738F2583A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C7D45E-4111-4AA2-BD6F-8C738F2583A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C7D45E-4111-4AA2-BD6F-8C738F2583A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C7D45E-4111-4AA2-BD6F-8C738F2583A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

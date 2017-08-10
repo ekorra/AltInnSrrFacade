@@ -22,7 +22,7 @@ namespace AltInnSrr.Lib
             try
             {
                 var client = GetClient();
-                var result = await client.GetRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password, altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode,null);
+                var result = await client.GetRightsBasicAsync(altInnEnvironment.AltInnUserName, altInnEnvironment.AltInnPassword, altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode,null);
                 return result.Body.GetRightsBasicResult;
             }
             catch (FaultException<AltinnFault> e)
@@ -45,7 +45,7 @@ namespace AltInnSrr.Lib
 
             try
             {
-                var result = await client.GetRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password,
+                var result = await client.GetRightsBasicAsync(altInnEnvironment.AltInnUserName, altInnEnvironment.AltInnPassword,
                     altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode, orgnr.ToString());
                 return result.Body.GetRightsBasicResult;
             }
@@ -81,7 +81,7 @@ namespace AltInnSrr.Lib
                     }
                 };
 
-                var result = await client.DeleteRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password,
+                var result = await client.DeleteRightsBasicAsync(altInnEnvironment.AltInnUserName, altInnEnvironment.AltInnPassword,
                     altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode, deleteRightRequestList);
 
                 return result.Body.DeleteRightsBasicResult;
@@ -116,7 +116,7 @@ namespace AltInnSrr.Lib
                     }
                 };
 
-                var result = await client.AddRightsBasicAsync(altInnEnvironment.UserName, altInnEnvironment.Password,
+                var result = await client.AddRightsBasicAsync(altInnEnvironment.AltInnUserName, altInnEnvironment.AltInnPassword,
                     altInnEnvironment.ServiceCode, altInnEnvironment.ServiceEditionCode, addRightRequestList);
                 return result.Body.AddRightsBasicResult;
             }

@@ -13,16 +13,19 @@
       "launchBrowser": true,
       "launchUrl": "api/organisations",
       "environmentVariables": {
+        "AltInnPassword": "AltInnTest123",
+        "AltInnUserName": "BRG",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "AltInnSrr.web": {
       "commandName": "Project",
-      "commandLineArgs": "t=est",
       "launchBrowser": true,
       "launchUrl": "api/organisations",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "AltInnPassword": "AltInnTest123",
+        "AltInnUserName": "BRG",
+        "ASPNETCORE_ENVIRONMENT": "Staging"
       },
       "applicationUrl": "http://localhost:65478"
     },
@@ -32,14 +35,18 @@
       "launchBrowser": true,
       "launchUrl": "api/organisations",
       "environmentVariables": {
+        "AltInnUserPassword": "AltInnTest123",
+        "AltInnUserName": "BRG",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "staging": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "api/organisations",
       "environmentVariables": {
+        "AltInnPassword": "oYGGow1T",
+        "AltInnUserName": "DIFI_BR",
         "ASPNETCORE_ENVIRONMENT": "Staging"
       },
       "applicationUrl": "http://localhost:65477/"
