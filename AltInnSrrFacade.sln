@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Api", "MoveAdmin.Web\AltInnSrr.Api.csproj", "{05A4C1FE-E6DD-45EC-ACE8-9CFFAC405AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Api", "AltInnSrr.Api\AltInnSrr.Api.csproj", "{05A4C1FE-E6DD-45EC-ACE8-9CFFAC405AA5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Lib.Test", "AltInnSrr.Test\AltInnSrr.Lib.Test.csproj", "{D99A4CD0-AE05-46DF-BB1A-1C759255C1E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Lib.Test", "AltInnSrr.Lib.Test\AltInnSrr.Lib.Test.csproj", "{D99A4CD0-AE05-46DF-BB1A-1C759255C1E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Lib", "AltInnSrr\AltInnSrr.Lib.csproj", "{60824E60-6B71-4F4D-8957-5C5B7F0528AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AltInnSrr.Lib", "AltInnSrr.Lib\AltInnSrr.Lib.csproj", "{60824E60-6B71-4F4D-8957-5C5B7F0528AB}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{14C7D45E-4111-4AA2-BD6F-8C738F2583A2}"
 EndProject
