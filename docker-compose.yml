@@ -4,5 +4,5 @@ services:
   altinnsrr.api:
     image: altinnsrr.api
     build:
-      context: ./MoveAdmin.Web
+      context: ./AltInnSrr.Api
       dockerfile: Dockerfile

@@ -20,7 +20,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AltInnSrr\AltInnSrr.Lib.csproj" />
+    <ProjectReference Include="..\AltInnSrr.Lib\AltInnSrr.Lib.csproj" />
   </ItemGroup>
 
 </Project>
