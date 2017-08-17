@@ -6,6 +6,6 @@ dist: trusty
 before_script:
   - chmod a+x ./build.sh
 script:
-  - dotnet restore
+  - dotnet restore AltInnSrrFacade.sln
   - dotnet build -c Release src
 #  - ./build.sh
