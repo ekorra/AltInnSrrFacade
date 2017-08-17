@@ -1,9 +1,11 @@
 language: csharp
 solution: AltInnSrrFacade.sln
 mono: none
-dotnet: 1.0.3
+dotnet: 1.0.4
 dist: trusty
 before_script:
   - chmod a+x ./build.sh
 script:
-  - ./build.sh
+  - dotnet restore AltInnSrrFacade.sln
+  - dotnet build -c Release AltInnSrrFacade.sln
+#  - ./build.sh
