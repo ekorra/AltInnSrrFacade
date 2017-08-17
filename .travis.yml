@@ -7,5 +7,5 @@ before_script:
   - chmod a+x ./build.sh
 script:
   - dotnet restore AltInnSrrFacade.sln
-  - dotnet build -c Release src
+  - dotnet build -c Release
 #  - ./build.sh
