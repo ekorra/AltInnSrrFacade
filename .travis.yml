@@ -1,0 +1,9 @@
+language: csharp
+solution: AltInnSrrFacade.sln
+mono: none
+dotnet: 1.0.3
+dist: trusty
+before_script:
+  - chmod a+x ./build.sh
+script:
+  - ./build.sh
